@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ikigai Capability Architecture 2026–2027</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F8F7F4;
+  --surface: #FFFFFF;
+  --surface2: #F2F0EC;
+  --border: rgba(0,0,0,.08);
+  --border-strong: rgba(0,0,0,.14);
+  --text: #111110;
+  --text2: #5A5855;
+  --text3: #9B9895;
+
+  --t1: #2352A8;
+  --t1l: #EEF3FB;
+  --t2: #1A7A4A;
+  --t2l: #EBF6F0;
+  --t3: #C0421E;
+  --t3l: #FDF0EB;
+  --t4: #7040A8;
+  --t4l: #F2EBF9;
+
+  --gold: #D4A017;
+  --radius: 14px;
+  --shadow: 0 2px 16px rgba(0,0,0,.07);
+  --shadow-hover: 0 8px 40px rgba(0,0,0,.13);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; overflow-x:hidden; }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@keyframes slideRight { from{width:0} to{width:var(--w)} }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.04)} }
+@keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+@keyframes floatUp { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+@keyframes spin { to{transform:rotate(360deg)} }
+@keyframes countUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+@keyframes barGrow { from{width:0;opacity:0} to{opacity:1} }
+@keyframes progressFill { from{width:0} to{width:100%} }
+
+.fade-in { animation: fadeUp .6s ease both; }
+.fade-in:nth-child(1){animation-delay:.05s}
+.fade-in:nth-child(2){animation-delay:.12s}
+.fade-in:nth-child(3){animation-delay:.18s}
+.fade-in:nth-child(4){animation-delay:.24s}
+.fade-in:nth-child(5){animation-delay:.30s}
+.fade-in:nth-child(6){animation-delay:.36s}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:4px}
+
+/* ─── NAV ─── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  background:rgba(248,247,244,.88);
+  backdrop-filter:blur(20px) saturate(1.4);
+  border-bottom:1px solid var(--border);
+  height:52px; display:flex; align-items:center; padding:0 28px; gap:4px;
+}
+nav .logo {
+  font-family:'Syne',sans-serif; font-weight:800;
+  font-size:14px; margin-right:16px; color:var(--text);
+  display:flex; align-items:center; gap:8px;
+}
+.logo-dot { width:8px;height:8px;border-radius:50%;background:var(--gold);animation:pulse 2s ease infinite; }
+nav a {
+  font-size:12px; font-weight:500; color:var(--text2);
+  text-decoration:none; padding:6px 12px; border-radius:8px;
+  transition:all .2s; white-space:nowrap;
+}
+nav a:hover { background:var(--surface2); color:var(--text); }
+nav a.active { background:var(--text); color:#fff; }
+
+/* ─── HERO ─── */
+.hero {
+  min-height:100vh;
+  display:flex; flex-direction:column; justify-content:center;
+  padding:100px 48px 64px;
+  position:relative; overflow:hidden;
+}
+.hero-bg {
+  position:absolute; inset:0;
+  background: linear-gradient(135deg, #0D0C0B 0%, #1A1816 45%, #0B1A2E 100%);
+}
+.hero-grid {
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+.hero-glow {
+  position:absolute;
+  width:600px; height:600px; border-radius:50%;
+  filter:blur(120px); opacity:.25;
+}
+.hero-glow-1 { background:#2352A8; right:-100px; top:-100px; animation:floatUp 8s ease infinite; }
+.hero-glow-2 { background:#1A7A4A; left:-100px; bottom:-100px; animation:floatUp 10s ease infinite .5s; }
+.hero-inner { position:relative; max-width:1100px; margin:0 auto; width:100%; }
+.hero-tag {
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:11px; font-weight:600; letter-spacing:.15em; text-transform:uppercase;
+  color:rgba(255,255,255,.4); margin-bottom:28px;
+}
+.hero-tag-line { width:32px;height:1px;background:rgba(255,255,255,.3); }
+.hero h1 {
+  font-family:'Syne',sans-serif; font-size:clamp(36px,5.5vw,72px);
+  font-weight:800; color:#fff; line-height:1.05; margin-bottom:20px;
+}
+.hero h1 em { font-style:normal; color:rgba(255,255,255,.35); }
+.hero-sub {
+  font-size:15px; color:rgba(255,255,255,.45); max-width:620px;
+  margin-bottom:48px; font-style:italic; line-height:1.7;
+}
+.hero-stats { display:flex; flex-wrap:wrap; gap:0; }
+.hero-stat {
+  padding:20px 32px; border-right:1px solid rgba(255,255,255,.08);
+  animation:countUp .8s ease both;
+}
+.hero-stat:last-child{border:none}
+.hero-stat .n {
+  font-family:'Syne',sans-serif; font-size:36px; font-weight:700; color:#fff;
+  display:block;
+}
+.hero-stat .l { font-size:11px; color:rgba(255,255,255,.35); letter-spacing:.06em; text-transform:uppercase; }
+.hero-scroll {
+  position:absolute; bottom:32px; left:50%; transform:translateX(-50%);
+  color:rgba(255,255,255,.3); font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+}
+.scroll-line { width:1px;height:40px;background:rgba(255,255,255,.15);animation:progressFill 2s ease infinite; }
+
+/* ─── SECTION LAYOUT ─── */
+.container { max-width:1200px; margin:0 auto; padding:0 32px; }
+section { padding:72px 0; }
+section+section { border-top:1px solid var(--border); }
+
+.sec-head { margin-bottom:40px; }
+.sec-eyebrow {
+  font-size:10px; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--text3); margin-bottom:10px;
+}
+.sec-title {
+  font-family:'Syne',sans-serif; font-size:clamp(24px,3vw,38px);
+  font-weight:700; line-height:1.15; margin-bottom:10px;
+}
+.sec-desc { font-size:14px; color:var(--text2); max-width:600px; line-height:1.7; }
+
+/* ─── TRACK CARDS ─── */
+.tracks { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:0; }
+@media(max-width:900px){.tracks{grid-template-columns:repeat(2,1fr)}}
+
+.track-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:28px;
+  position:relative; overflow:hidden; cursor:pointer;
+  transition:all .3s cubic-bezier(.2,.8,.3,1);
+}
+.track-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  transition:height .3s ease;
+}
+.track-card:hover { box-shadow:var(--shadow-hover); transform:translateY(-3px); }
+.track-card:hover::before { height:3px; }
+.tc1::before{background:var(--t1)}.tc2::before{background:var(--t2)}
+.tc3::before{background:var(--t3)}.tc4::before{background:var(--t4)}
+
+.track-num {
+  font-size:9px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+  margin-bottom:6px;
+}
+.tc1 .track-num{color:var(--t1)}.tc2 .track-num{color:var(--t2)}
+.tc3 .track-num{color:var(--t3)}.tc4 .track-num{color:var(--t4)}
+
+.track-card h3 { font-size:15px; font-weight:600; margin-bottom:8px; }
+.track-card p { font-size:13px; color:var(--text2); line-height:1.55; margin-bottom:20px; }
+.track-stats { display:flex; gap:20px; }
+.ts-item .val { font-size:22px; font-weight:700; }
+.tc1 .ts-item .val{color:var(--t1)}.tc2 .ts-item .val{color:var(--t2)}
+.tc3 .ts-item .val{color:var(--t3)}.tc4 .ts-item .val{color:var(--t4)}
+.ts-item .key { font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:.06em; }
+
+/* ─── CAPABILITY TABLE ─── */
+.filters { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
+.f-btn {
+  padding:6px 14px; border:1px solid var(--border-strong); border-radius:20px;
+  font-size:12px; font-weight:500; color:var(--text2); background:var(--surface);
+  cursor:pointer; transition:all .2s;
+}
+.f-btn:hover{border-color:var(--text);color:var(--text)}
+.f-btn.active{background:var(--text);color:#fff;border-color:var(--text)}
+
+.table-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:var(--radius); }
+table.cap {
+  width:100%; border-collapse:collapse; font-size:13px;
+}
+.cap thead tr { background:var(--text); }
+.cap th {
+  padding:13px 16px; text-align:left; color:rgba(255,255,255,.7);
+  font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+  white-space:nowrap;
+}
+.cap tbody tr {
+  border-bottom:1px solid var(--border);
+  transition:background .15s;
+}
+.cap tbody tr:hover{background:var(--surface2)}
+.cap td { padding:12px 16px; vertical-align:top; }
+.cap tbody tr:last-child { border:none; }
+
+.tl-accent { border-left:3px solid; }
+.tl1{border-color:var(--t1)}.tl2{border-color:var(--t2)}
+.tl3{border-color:var(--t3)}.tl4{border-color:var(--t4)}
+
+.cap-name { font-weight:600; font-size:13px; }
+.cap-inst { font-size:12px; color:var(--text2); margin-top:2px; }
+.badge {
+  display:inline-flex; align-items:center;
+  padding:2px 9px; border-radius:20px;
+  font-size:10px; font-weight:700; letter-spacing:.04em; white-space:nowrap;
+}
+.b-foundation{background:#F1F5F9;color:#475569}
+.b-core{background:#CCFBF1;color:#0F766E}
+.b-elite{background:#FEF3C7;color:#B45309}
+.b-p0{background:#FEE2E2;color:#DC2626}
+.b-p1{background:#DBEAFE;color:#1D4ED8}
+.b-p2{background:#EDE9FE;color:#6D28D9}
+.b-p3{background:#F3F4F6;color:#6B7280}
+
+.people { display:flex; flex-wrap:wrap; gap:3px; }
+.person {
+  background:var(--surface2); border:1px solid var(--border);
+  padding:1px 7px; border-radius:4px;
+  font-size:10px; color:var(--text2);
+}
+
+/* ─── GANTT ─── */
+.gantt-wrap { overflow-x:auto; }
+.gantt {
+  min-width:900px; background:var(--surface);
+  border:1px solid var(--border); border-radius:var(--radius);
+  overflow:hidden;
+}
+.gantt-header {
+  display:grid; grid-template-columns:220px 1fr;
+  background:var(--text); color:rgba(255,255,255,.7);
+}
+.gantt-header-left {
+  padding:12px 16px;
+  font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+}
+.gantt-months {
+  display:grid; grid-template-columns:repeat(18,1fr);
+  border-left:1px solid rgba(255,255,255,.1);
+}
+.gantt-month {
+  padding:12px 4px; text-align:center;
+  font-size:9px; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+  border-right:1px solid rgba(255,255,255,.06);
+}
+.gantt-phase-row {
+  display:grid; grid-template-columns:220px 1fr;
+  background:var(--surface2); border-bottom:1px solid var(--border);
+}
+.gantt-phase-label {
+  padding:8px 16px; font-size:11px; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; display:flex; align-items:center; gap:8px;
+}
+.phase-pill {
+  padding:2px 10px; border-radius:12px; font-size:10px; font-weight:700;
+}
+.ph1{background:#EEF3FB;color:var(--t1)}.ph2{background:#EBF6F0;color:var(--t2)}.ph3{background:#F2EBF9;color:var(--t4)}
+.gantt-phase-bar { position:relative; }
+.phase-span {
+  position:absolute; top:6px; border-radius:4px; height:20px;
+  opacity:.15;
+}
+.gantt-row {
+  display:grid; grid-template-columns:220px 1fr;
+  border-bottom:1px solid var(--border); min-height:38px;
+}
+.gantt-row:last-child{border:none}
+.gantt-row:hover .gantt-row-label{background:var(--surface2)}
+.gantt-row-label {
+  padding:8px 16px; display:flex; align-items:center; gap:8px;
+  font-size:12px; border-right:1px solid var(--border);
+  transition:background .15s;
+}
+.row-track-dot { width:6px;height:6px;border-radius:50%;flex-shrink:0; }
+.gantt-row-bars {
+  position:relative;
+  display:grid; grid-template-columns:repeat(18,1fr);
+}
+.gantt-cell {
+  border-right:1px solid var(--border);
+  min-height:38px;
+}
+.gantt-bar {
+  position:absolute; top:9px; height:20px; border-radius:4px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:9px; font-weight:700; color:#fff; white-space:nowrap; overflow:hidden;
+  cursor:pointer; transition:filter .2s, transform .2s;
+  animation:barGrow .6s cubic-bezier(.2,.8,.3,1) both;
+}
+.gantt-bar:hover { filter:brightness(1.1); transform:scaleY(1.1); }
+.gantt-today {
+  position:absolute; top:0; bottom:0; width:2px; background:var(--gold);
+  opacity:.7;
+}
+.gantt-today::after {
+  content:'TODAY'; position:absolute; top:-18px; left:50%; transform:translateX(-50%);
+  font-size:8px; font-weight:700; color:var(--gold); white-space:nowrap; letter-spacing:.1em;
+}
+
+/* ─── GATES ─── */
+.gates { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+@media(max-width:800px){.gates{grid-template-columns:1fr}}
+.gate {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:24px; position:relative; overflow:hidden;
+  transition:all .3s ease; cursor:pointer;
+}
+.gate:hover { box-shadow:var(--shadow-hover); transform:translateY(-2px); }
+.gate-id-badge {
+  display:inline-block; font-size:11px; font-weight:800;
+  font-family:'Syne',sans-serif;
+  padding:4px 12px; border-radius:8px; margin-bottom:10px;
+}
+.g1{background:#EEF3FB;color:var(--t1)}.g2{background:#FEE2E2;color:#C0421E}
+.g3{background:#EBF6F0;color:var(--t2)}.g4{background:#FFFBEB;color:#B45309}
+.g5{background:#F2EBF9;color:var(--t4)}.g6{background:#F1F5F9;color:#475569}
+.gate h3 { font-size:15px; font-weight:600; margin-bottom:8px; }
+.gate-purpose { font-size:13px; color:var(--text2); line-height:1.6; margin-bottom:14px; }
+.gate-meta { font-size:11px; color:var(--text3); display:flex; flex-wrap:wrap; gap:10px; }
+.gate-meta span { display:flex; align-items:center; gap:4px; }
+
+/* ─── BUDGET ─── */
+.budget-summary {
+  display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:28px;
+}
+@media(max-width:900px){.budget-summary{grid-template-columns:repeat(2,1fr)}}
+.budget-stat {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:20px;
+  transition:all .3s; cursor:default;
+}
+.budget-stat:last-child { background:var(--text); border-color:transparent; }
+.budget-stat:last-child .b-label { color:rgba(255,255,255,.5); }
+.budget-stat:last-child .b-val { color:#fff; }
+.budget-stat:hover { box-shadow:var(--shadow); transform:translateY(-2px); }
+.b-label { font-size:11px; color:var(--text3); margin-bottom:6px; }
+.b-val { font-family:'Syne',sans-serif; font-size:22px; font-weight:700; }
+.b-note { font-size:10px; color:var(--text3); margin-top:4px; }
+
+.budget-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+@media(max-width:900px){.budget-grid{grid-template-columns:1fr}}
+.budget-cat {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); overflow:hidden;
+}
+.budget-cat-head {
+  padding:12px 18px; color:#fff;
+  font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+}
+.bh1{background:var(--t1)}.bh2{background:var(--t2)}.bh3{background:var(--t3)}
+.bh4{background:var(--t4)}.bh5{background:#374151}.bh6{background:#1E293B}
+.budget-item {
+  padding:10px 18px; display:flex; justify-content:space-between; align-items:center;
+  border-bottom:1px solid var(--border); gap:12px;
+}
+.budget-item:last-child{border:none}
+.bi-name{font-size:12px}
+.bi-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.bi-cost{font-size:11px;font-weight:600;color:var(--text2)}
+.dec {
+  font-size:9px; font-weight:700; letter-spacing:.05em; padding:2px 8px; border-radius:4px;
+}
+.dec-must{background:#FEE2E2;color:#DC2626}
+.dec-should{background:#DBEAFE;color:#1D4ED8}
+.dec-defer{background:#F3F4F6;color:#6B7280}
+.dec-cond{background:#FEF3C7;color:#B45309}
+
+/* ─── MATRIX ─── */
+.matrix-wrap { overflow-x:auto; }
+table.matrix {
+  width:100%; border-collapse:collapse; font-size:12px;
+  border:1px solid var(--border); border-radius:var(--radius); overflow:hidden;
+}
+.matrix th {
+  background:var(--text); color:rgba(255,255,255,.7);
+  padding:10px 14px; font-size:10px; font-weight:600; letter-spacing:.06em;
+  text-transform:uppercase; white-space:nowrap; text-align:center;
+}
+.matrix th:first-child{text-align:left;min-width:200px}
+.matrix tbody tr{border-bottom:1px solid var(--border)}
+.matrix tbody tr:hover{background:var(--surface2)}
+.matrix td{padding:10px 14px;text-align:center}
+.matrix td:first-child{text-align:left;font-size:12px;font-weight:500}
+.cm{color:#DC2626;font-weight:800;font-size:14px}
+.cr{color:#2563EB;font-weight:700;font-size:13px}
+.co{color:#7C3AED;font-size:13px}
+.cd{color:var(--border-strong)}
+
+/* ─── KPI ─── */
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:900px){.kpi-grid{grid-template-columns:1fr}}
+.kpi {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:20px;
+  position:relative; overflow:hidden; transition:all .3s;
+}
+.kpi:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px)}
+.kpi::after {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:2px;
+}
+.kpi[data-t="1"]::after{background:var(--t1)}
+.kpi[data-t="2"]::after{background:var(--t2)}
+.kpi[data-t="3"]::after{background:var(--t3)}
+.kpi[data-t="4"]::after{background:var(--t4)}
+.kpi[data-t="overall"]::after{background:var(--gold)}
+.kpi-track{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.kpi[data-t="1"] .kpi-track{color:var(--t1)}
+.kpi[data-t="2"] .kpi-track{color:var(--t2)}
+.kpi[data-t="3"] .kpi-track{color:var(--t3)}
+.kpi[data-t="4"] .kpi-track{color:var(--t4)}
+.kpi[data-t="overall"] .kpi-track{color:var(--gold)}
+.kpi-name{font-size:13px;font-weight:600;margin-bottom:16px;line-height:1.4}
+.kpi-phases{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.kpi-ph{text-align:center}
+.kpi-ph-l{font-size:9px;color:var(--text3);margin-bottom:3px;letter-spacing:.06em;text-transform:uppercase}
+.kpi-ph-v{font-size:12px;font-weight:600;padding:6px 4px;border-radius:6px;background:var(--surface2)}
+.kpi-ph-v.tick{background:#DCFCE7;color:#166534}
+.kpi-ph-v.empty{color:var(--text3);font-weight:400}
+
+/* ─── PHASE MILESTONE ─── */
+.milestone-banner {
+  background:var(--text); color:#fff;
+  padding:14px 20px; border-radius:10px;
+  font-size:13px; font-weight:600;
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:16px; margin-top:24px;
+}
+.milestone-star{color:var(--gold);font-size:18px}
+
+/* ─── FOOTER ─── */
+footer {
+  background:var(--text); color:rgba(255,255,255,.4);
+  text-align:center; padding:32px;
+  font-size:12px; letter-spacing:.04em;
+}
+footer strong{color:rgba(255,255,255,.7)}
+
+/* ─── MISC ─── */
+.hidden{display:none!important}
+
+/* ─── INTERSECTION OBSERVER REVEAL ─── */
+.reveal { opacity:0; transform:translateY(20px); transition:opacity .7s ease, transform .7s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo"><div class="logo-dot"></div>IKIGAI CAP</div>
+  <a href="#hero" class="active">Overview</a>
+  <a href="#capabilities">Capabilities</a>
+  <a href="#gantt">Gantt</a>
+  <a href="#gates">Gates</a>
+  <a href="#budget">Budget</a>
+  <a href="#matrix">Matrix</a>
+  <a href="#kpis">KPIs</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-glow hero-glow-1"></div>
+  <div class="hero-glow hero-glow-2"></div>
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <div class="hero-tag-line"></div>
+      TechFIS Strategic Plan
+      <div class="hero-tag-line"></div>
+    </div>
+    <h1>Capability &amp;<br><em>Credibility</em><br>Architecture<br>2026–2027</h1>
+    <p class="hero-sub">"Trust to enter. Engineering to deliver. Architecture to lead. Governance to scale."<br>Certifications are evidence; capability is the objective.</p>
+    <div class="hero-stats">
+      <div class="hero-stat" style="animation-delay:.1s"><span class="n">4</span><div class="l">Tracks</div></div>
+      <div class="hero-stat" style="animation-delay:.2s"><span class="n">29</span><div class="l">Capabilities</div></div>
+      <div class="hero-stat" style="animation-delay:.3s"><span class="n">6</span><div class="l">Delivery Gates</div></div>
+      <div class="hero-stat" style="animation-delay:.4s"><span class="n">18</span><div class="l">Months / 3 Phases</div></div>
+      <div class="hero-stat" style="animation-delay:.5s"><span class="n">$142K+</span><div class="l">Year 1 Budget</div></div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- TRACK OVERVIEW -->
+  <section id="tracks">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">00 — Framework</div>
+      <h2 class="sec-title">Four Tracks</h2>
+      <p class="sec-desc">Kiến trúc năng lực chia thành 4 tracks song song, xây dựng đồng thời trong 18 tháng.</p>
+    </div>
+    <div class="tracks reveal">
+      <div class="track-card tc1">
+        <div class="track-num">Track 1</div>
+        <h3>Compliance &amp; Trust</h3>
+        <p>ISO 27001, ISMS, AI governance, security leadership &amp; consultant bridge.</p>
+        <div class="track-stats">
+          <div class="ts-item"><div class="val">6</div><div class="key">Items</div></div>
+          <div class="ts-item"><div class="val">P0–P2</div><div class="key">Priority</div></div>
+        </div>
+      </div>
+      <div class="track-card tc2">
+        <div class="track-num">Track 2</div>
+        <h3>AI Engineering</h3>
+        <p>RAG pipeline, LLM orchestration, ML production, eval harness &amp; model lifecycle.</p>
+        <div class="track-stats">
+          <div class="ts-item"><div class="val">11</div><div class="key">Items</div></div>
+          <div class="ts-item"><div class="val">P0–P2</div><div class="key">Priority</div></div>
+        </div>
+      </div>
+      <div class="track-card tc3">
+        <div class="track-num">Track 3</div>
+        <h3>Platform &amp; Security</h3>
+        <p>Kubernetes, DevSecOps, observability, SRE, CompTIA Security+ &amp; SecAI+.</p>
+        <div class="track-stats">
+          <div class="ts-item"><div class="val">8</div><div class="key">Items</div></div>
+          <div class="ts-item"><div class="val">P0–P3</div><div class="key">Priority</div></div>
+        </div>
+      </div>
+      <div class="track-card tc4">
+        <div class="track-num">Track 4</div>
+        <h3>Leadership &amp; SA</h3>
+        <p>AWS SAP-C02, AIF-C01, TOGAF — for solution architects &amp; team leads.</p>
+        <div class="track-stats">
+          <div class="ts-item"><div class="val">3</div><div class="key">Items</div></div>
+          <div class="ts-item"><div class="val">P1–P3</div><div class="key">Priority</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAPABILITIES -->
+  <section id="capabilities">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">01 — Capabilities</div>
+      <h2 class="sec-title">Capability Architecture</h2>
+      <p class="sec-desc">Tất cả 29 năng lực cần xây dựng, phân theo Track, Tier và Priority.</p>
+    </div>
+    <div class="filters reveal" id="filterBtns"></div>
+    <div class="table-wrap reveal">
+      <table class="cap">
+        <thead>
+          <tr>
+            <th>Track</th><th>Tier</th><th>Capability</th>
+            <th>Priority</th><th>Cost (USD)</th><th>People</th><th>Timeline</th>
+          </tr>
+        </thead>
+        <tbody id="capBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- GANTT -->
+  <section id="gantt">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">02 — Timeline</div>
+      <h2 class="sec-title">Gantt Chart — 18 Months</h2>
+      <p class="sec-desc">Lộ trình chi tiết theo tháng. 3 phases: Pitch-Ready → Contract-Ready → Go-Live Ready.</p>
+    </div>
+    <div class="gantt-wrap reveal">
+      <div class="gantt" id="ganttChart"></div>
+    </div>
+  </section>
+
+  <!-- GATES -->
+  <section id="gates">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">03 — Quality Control</div>
+      <h2 class="sec-title">Delivery Gates &amp; Standards</h2>
+      <p class="sec-desc">6 gates kiểm soát chất lượng bắt buộc. Regulated AI go-live = G1+G2+G3+G4+G5+G6.</p>
+    </div>
+    <div class="gates reveal" id="gatesGrid"></div>
+  </section>
+
+  <!-- BUDGET -->
+  <section id="budget">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">04 — Investment</div>
+      <h2 class="sec-title">Budget Summary</h2>
+      <p class="sec-desc">Year 1 priority: Trust engine first → Delivery engine second → Prestige badges last.</p>
+    </div>
+    <div class="budget-summary reveal">
+      <div class="budget-stat"><div class="b-label">Company Certs</div><div class="b-val">$90K–190K</div><div class="b-note">One-time</div></div>
+      <div class="budget-stat"><div class="b-label">Staff Certs</div><div class="b-val">$8K–24K</div><div class="b-note">One-time</div></div>
+      <div class="budget-stat"><div class="b-label">Documentation</div><div class="b-val">$2K–4.5K</div><div class="b-note">One-time</div></div>
+      <div class="budget-stat"><div class="b-label">Recurring Headcount</div><div class="b-val">$42K–90K</div><div class="b-note">Annual</div></div>
+      <div class="budget-stat"><div class="b-label">TOTAL YEAR 1</div><div class="b-val">$142K–308K</div><div class="b-note">Full range</div></div>
+    </div>
+    <div class="budget-grid reveal" id="budgetGrid"></div>
+  </section>
+
+  <!-- MATRIX -->
+  <section id="matrix">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">05 — Role Matrix</div>
+      <h2 class="sec-title">Role-Based Capability Matrix</h2>
+      <p class="sec-desc">M = Mandatory &nbsp;·&nbsp; R = Recommended &nbsp;·&nbsp; O = Optional &nbsp;·&nbsp; — = Not required</p>
+    </div>
+    <div class="matrix-wrap reveal">
+      <table class="matrix" id="matrixTable">
+        <thead>
+          <tr>
+            <th>Capability</th>
+            <th>All Staff</th><th>AI Eng</th><th>Sr AI / Lead</th>
+            <th>Platform</th><th>Platform Sec</th><th>PM / BA</th>
+            <th>Sol Arch / EL</th><th>Compliance</th>
+          </tr>
+        </thead>
+        <tbody id="matrixBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- KPIs -->
+  <section id="kpis">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">06 — KPIs</div>
+      <h2 class="sec-title">KPIs &amp; Metrics</h2>
+      <p class="sec-desc">Success metrics cho 3 phases: P1 (0–3m), P2 (3–9m), P3 (9–18m).</p>
+    </div>
+    <div class="kpi-grid reveal" id="kpiGrid"></div>
+  </section>
+
+</div>
+
+<footer>
+  <strong>Ikigai Capability &amp; Credibility Architecture 2026–2027</strong> &nbsp;·&nbsp; TechFIS Internal — Confidential
+</footer>
+
+<script>
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+
+const TRACK_COLORS = { 1:'#2352A8', 2:'#1A7A4A', 3:'#C0421E', 4:'#7040A8' };
+const TRACK_NAMES  = { 1:'Compliance & Trust', 2:'AI Engineering', 3:'Platform & Security', 4:'Leadership & SA' };
+
+const caps = [
+  {t:1,tier:'FOUNDATION',name:'Compliance Onboarding Package',inst:'Internal: AUP + DPL + incident reporting + NĐ13/2023',p:'P0',cost:'$0–2K',people:['All staff'],time:'T1 (th1-2)'},
+  {t:1,tier:'CORE',name:'ISMS Implementation Capability',inst:'ISO 27001 Awareness / Implementer (BSI/TÜV)',p:'P1',cost:'$500–2K',people:['ThuongTV','TayNV','HienPG','ThuanLV'],time:'T2 (th3-6)'},
+  {t:1,tier:'CORE',name:'AI Governance & DD Response',inst:'Internal: AI governance training + DD response template',p:'P1',cost:'$0',people:['ThaoLTT','HienPG','TayNV'],time:'T2 (th3-6)'},
+  {t:1,tier:'ELITE',name:'ISMS Leadership & Audit Authority',inst:'ISO 27001 Lead Implementer cert',p:'P1',cost:'$2K–5K',people:['TBD'],time:'T2-T3'},
+  {t:1,tier:'ELITE',name:'CISM — Security Governance',inst:'CISM (ISACA) — 5yr exp path',p:'P2',cost:'$575–2K',people:['TBD'],time:'T3'},
+  {t:1,tier:'ELITE',name:'Security Leadership — Consultant Bridge',inst:'Retain CISSP/CISM consultant part-time',p:'P0',cost:'$24K–60K/yr',people:['External'],time:'Immediate'},
+  {t:2,tier:'FOUNDATION',name:'AI Production Coding Standard',inst:'Internal bootcamp: Python for AI production',p:'P0',cost:'$0',people:['ThuanLV','TayNV','PhucNH','HienPG','NguyenDK'],time:'T1'},
+  {t:2,tier:'FOUNDATION',name:'Prompt Engineering & Eval Discipline',inst:'Internal training: prompt safety, eval basics',p:'P0',cost:'$0',people:['ThuanLV','TayNV','ThuongTV','PhucNH','HienPG'],time:'T1'},
+  {t:2,tier:'FOUNDATION',name:'RAG Pipeline Competence',inst:'Internal: vector search, Qdrant + BGE-M3',p:'P0',cost:'$0',people:['PhucNH','TayNV','HienPG','NguyenDK','YenNN'],time:'T1'},
+  {t:2,tier:'FOUNDATION',name:'LLM Orchestration Competence',inst:'LangChain/LangGraph training',p:'P1',cost:'$0–50',people:['TayNV','ThaoLTT','YenNN','PhucNH','HienPG'],time:'T1'},
+  {t:2,tier:'CORE',name:'ML Production & Operationalization',inst:'AWS ML Engineer Associate (MLA-C01)',p:'P1',cost:'$150–311',people:['ThuongTV','YenNN','TayNV'],time:'T2'},
+  {t:2,tier:'CORE',name:'GenAI Production (RAG/Agent/Guardrails)',inst:'AWS GenAI Developer Pro (AIP-C01)',p:'P1',cost:'$300–311',people:['ThuongTV','NguyenDK'],time:'T2'},
+  {t:2,tier:'CORE',name:'AI Infra Credibility',inst:'NVIDIA NCA-GENL',p:'P2',cost:'$125–215',people:['ThuongTV','ThaoLTT','HienPG','YenNN'],time:'T2'},
+  {t:2,tier:'CORE',name:'AI Evaluation & Release Quality',inst:'Internal: RAG/LLM Eval Harness + CI/CD',p:'P1',cost:'$0',people:['ThuongTV','TayNV','PhucNH','HienPG','YenNN'],time:'T2'},
+  {t:2,tier:'CORE',name:'Model Lifecycle Management',inst:'Internal: MLOps — release, rollback, guardrails',p:'P1',cost:'$0',people:['ThaoLTT','ThuongTV','PhucNH','TayNV'],time:'T2'},
+  {t:2,tier:'ELITE',name:'Agentic AI Production Depth',inst:'NVIDIA NCP-AAI',p:'P2',cost:'$200–211',people:['ThuongTV','NguyenDK'],time:'T3'},
+  {t:2,tier:'ELITE',name:'AI Quality Governance',inst:'Ikigai AI Design Review Board (internal)',p:'P1',cost:'$0',people:['ThuongTV','TayNV','HienPG'],time:'T2'},
+  {t:3,tier:'FOUNDATION',name:'Infrastructure Fundamentals',inst:'Internal: Linux, container, networking',p:'P0',cost:'$0',people:['ThuanLV','HuyLX','HienPG','YenNN'],time:'T1'},
+  {t:3,tier:'FOUNDATION',name:'DevSecOps Baseline',inst:'Internal: CI/CD + IAM + secret management',p:'P0',cost:'$0',people:['ThuongTV','HuyLX','TayNV','ThaoLTT'],time:'T1'},
+  {t:3,tier:'FOUNDATION',name:'Observability Fundamentals',inst:'Internal: logging, monitoring, alerting',p:'P0',cost:'$0',people:['ThuanLV','TayNV','HienPG','YenNN','ThaoLTT'],time:'T1'},
+  {t:3,tier:'CORE',name:'Kubernetes Production Operation',inst:'CKA — Certified Kubernetes Admin',p:'P1',cost:'$445–645',people:['ThuongTV','NguyenDK','TayNV','ThuanLV'],time:'T2'},
+  {t:3,tier:'CORE',name:'Security Engineering Baseline',inst:'CompTIA Security+',p:'P1',cost:'$425–488',people:['ThuongTV','YenNN','HuyLX','ThuanLV'],time:'T2'},
+  {t:3,tier:'CORE',name:'AI Security Specialization',inst:'CompTIA SecAI+',p:'P2',cost:'$360–410',people:['ThuongTV','YenNN','ThuanLV','HuyLX'],time:'T2-T3'},
+  {t:3,tier:'CORE',name:'SRE & Incident Management',inst:'Internal: on-call, MTTR, postmortem, SLO',p:'P1',cost:'$0',people:['ThuongTV','HienPG','ThaoLTT','YenNN'],time:'T2'},
+  {t:3,tier:'CORE',name:'Production Observability Standard',inst:'Internal: Grafana/Langfuse dashboards + SLOs',p:'P1',cost:'$0',people:['ThaoLTT','TayNV','HienPG'],time:'T2'},
+  {t:3,tier:'ELITE',name:'Kubernetes Security Hardening',inst:'CKS — after CKA',p:'P2',cost:'$395',people:['ThuongTV'],time:'T3'},
+  {t:3,tier:'ELITE',name:'Security Architecture Leadership',inst:'CISSP (ISC²) — 5yr exp path',p:'P3',cost:'$749',people:['TBD'],time:'T3'},
+  {t:4,tier:'CORE',name:'AWS Solutions Architect Professional',inst:'AWS SAP-C02 — enterprise architecture',p:'P1',cost:'$300',people:['ThuongTV','NguyenDK','TayNV','YenNN','PhucNH'],time:'T2 (th3-9)'},
+  {t:4,tier:'CORE',name:'AWS AI Practitioner (AIF-C01) — PM/BA',inst:'AWS AIF-C01 — foundational AI literacy',p:'P2',cost:'$100',people:['ThuongTV','ThaoLTT','TayNV','HienPG','YenNN'],time:'T2 (th3-6)'},
+  {t:4,tier:'ELITE',name:'TOGAF / AWS Combo — Chief Architect',inst:'TOGAF Foundation + domain cert combo',p:'P3',cost:'$500–2K',people:['TBD'],time:'T3 (defer)'},
+];
+
+const gates = [
+  {id:'G1',cls:'g1',name:'Architecture Review',purpose:'Đảm bảo solution design đúng trước khi build → tránh rework, tránh tech debt',scope:'Proposal >$50K OR regulated client OR major platform change',approver:'Architecture Council',freq:'Per proposal'},
+  {id:'G2',cls:'g2',name:'Security & Privacy Review',purpose:'Đảm bảo không có lỗ hổng bảo mật và tuân thủ privacy trước khi xử lý dữ liệu',scope:'Regulated client OR PII OR cross-border',approver:'Security Lead / CISSP Consultant',freq:'Per project'},
+  {id:'G3',cls:'g3',name:'AI Eval & Release',purpose:'Đảm bảo AI output đạt chất lượng → tránh hallucination, prompt injection',scope:'Every AI production deployment',approver:'AI Tech Lead + Design Review Board',freq:'Per release'},
+  {id:'G4',cls:'g4',name:'Production Readiness',purpose:'Đảm bảo hệ thống sẵn sàng chạy production — observability, capacity, secrets',scope:'Every production go-live',approver:'Platform Lead',freq:'Per go-live'},
+  {id:'G5',cls:'g5',name:'Rollback & Incident Readiness',purpose:'Đảm bảo khi sự cố xảy ra, team có thể recover nhanh → giảm MTTR',scope:'Every production deployment',approver:'Platform Lead + Engineering Lead',freq:'Per deployment'},
+  {id:'G6',cls:'g6',name:'Client Delivery Sign-off',purpose:'Đảm bảo client hài lòng và có bằng chứng acceptance → protect Ikigai legally',scope:'Every client milestone',approver:'Solution Lead + Client',freq:'Per milestone'},
+];
+
+const budgetData = [
+  {cat:'bh1',label:'Compliance & Trust — Track 1',items:[
+    {n:'ISO 27001 full journey',c:'$25K–60K',d:'must'},
+    {n:'VAPT — Local',c:'$15K–30K',d:'must'},
+    {n:'VAPT — International',c:'$20K–40K',d:'cond'},
+    {n:'SOC 2 Type II',c:'$30K–60K',d:'defer'},
+    {n:'ISO 27001 Implementer (2-3)',c:'$1K–6K',d:'must'},
+    {n:'ISO 27001 Lead Implementer',c:'$2K–5K',d:'must'},
+  ]},
+  {cat:'bh2',label:'AI Engineering — Track 2',items:[
+    {n:'AWS MLA-C01 (2-3 eng)',c:'$300–933',d:'should'},
+    {n:'AWS AIP-C01 (1-2 eng)',c:'$300–622',d:'should'},
+    {n:'NVIDIA NCA-GENL (2-3)',c:'$250–645',d:'should'},
+    {n:'NVIDIA NCP-AAI',c:'$200–211',d:'defer'},
+    {n:'LLM Orchestration Training',c:'$0–300',d:'must'},
+  ]},
+  {cat:'bh3',label:'Platform & Security — Track 3',items:[
+    {n:'CKA (2-3 eng)',c:'$890–1,935',d:'must'},
+    {n:'CompTIA Security+ (3-4)',c:'$1,275–1,952',d:'should'},
+    {n:'CompTIA SecAI+ (1-2)',c:'$360–820',d:'should'},
+    {n:'CKS',c:'$395',d:'defer'},
+  ]},
+  {cat:'bh4',label:'Leadership & SA — Track 4',items:[
+    {n:'AWS SAP-C02 (1-2)',c:'$300–600',d:'should'},
+    {n:'AWS AIF-C01 (2-3 PM/BA)',c:'$200–300',d:'should'},
+    {n:'TOGAF',c:'$500–2K',d:'defer'},
+  ]},
+  {cat:'bh5',label:'Recurring Headcount',items:[
+    {n:'Compliance Lead (full-time)',c:'$18K–30K/yr',d:'cond'},
+    {n:'CISSP/CISM Consultant',c:'$24K–60K/yr',d:'must'},
+  ]},
+  {cat:'bh6',label:'Documentation',items:[
+    {n:'Governance docs (policy/AUP/IRP)',c:'$0–1K',d:'must'},
+    {n:'Technical docs (arch/model/DLP)',c:'$0',d:'must'},
+    {n:'Disclosure letters (law firm)',c:'$2K–3.5K',d:'should'},
+  ]},
+];
+
+const matrix = [
+  {n:'Compliance Onboarding (AUP+DPL)',v:['M','M','M','M','M','M','M','M']},
+  {n:'ISO 27001 Awareness / Implementer',v:['—','—','—','—','—','M','M','M']},
+  {n:'ISO 27001 Lead Implementer',v:['—','—','—','—','—','—','—','M']},
+  {n:'AI Governance & DD Response',v:['—','—','—','—','—','M','M','M']},
+  {n:'CISM',v:['—','—','—','—','—','—','—','M']},
+  {n:'Python for AI Production',v:['—','M','M','—','—','—','—','—']},
+  {n:'Prompt Engineering + Eval Basics',v:['—','M','M','—','—','—','R','—']},
+  {n:'RAG Pipeline (Qdrant + BGE-M3)',v:['—','M','M','—','—','—','—','—']},
+  {n:'LLM Orchestration',v:['—','R','M','—','—','—','R','—']},
+  {n:'AWS MLA-C01',v:['—','R','M','—','—','—','—','—']},
+  {n:'AWS AIP-C01',v:['—','O','M','—','—','—','—','—']},
+  {n:'NVIDIA NCA-GENL',v:['—','R','R','—','—','—','R','—']},
+  {n:'NVIDIA NCP-AAI',v:['—','—','R','—','—','—','O','—']},
+  {n:'RAG/LLM Eval Harness',v:['—','M','M','—','—','—','R','—']},
+  {n:'MLOps / Model Release & Rollback',v:['—','M','M','—','—','—','R','—']},
+  {n:'Linux / Container Fundamentals',v:['—','R','R','M','M','—','—','—']},
+  {n:'CI/CD + IAM + Secrets',v:['—','R','R','M','M','—','—','—']},
+  {n:'CKA (Kubernetes Admin)',v:['—','—','—','M','M','—','—','—']},
+  {n:'CKS (Kubernetes Security)',v:['—','—','—','O','M','—','—','—']},
+  {n:'CompTIA Security+',v:['—','R','R','M','M','—','R','R']},
+  {n:'CompTIA SecAI+',v:['—','—','R','R','M','—','—','R']},
+  {n:'CISSP',v:['—','—','—','—','R','—','—','M']},
+  {n:'SRE / Incident Response',v:['—','R','R','M','M','—','—','—']},
+  {n:'AWS SAP-C02',v:['—','—','—','—','—','—','M','—']},
+  {n:'AWS AIF-C01 (PM/BA)',v:['—','—','—','—','—','M','R','R']},
+];
+
+const kpis = [
+  {t:'1',type:'Cert',name:'Compliance onboarding completion',p1:'100%',p2:'100%',p3:'100%'},
+  {t:'1',type:'Cert',name:'ISO 27001 progress',p1:'Gap done',p2:'Implementing',p3:'Audit-ready'},
+  {t:'1',type:'Delivery',name:'Vendor DD answered within SLA',p1:'Baseline',p2:'≥80%',p3:'≥95%'},
+  {t:'1',type:'Delivery',name:'Critical VAPT findings remediated ≤30d',p1:'—',p2:'≥90%',p3:'100%'},
+  {t:'2',type:'Cert',name:'Foundation completion (AI team)',p1:'60-70%',p2:'90%+',p3:'100%'},
+  {t:'2',type:'Cert',name:'AWS MLA/AIP certified',p1:'—',p2:'2–3 pass',p3:'4–5 pass'},
+  {t:'2',type:'Delivery',name:'AI use cases with eval before UAT',p1:'—',p2:'≥60%',p3:'100%'},
+  {t:'2',type:'Delivery',name:'Production AI with fallback/HITL',p1:'—',p2:'≥70%',p3:'100%'},
+  {t:'3',type:'Cert',name:'CKA certified',p1:'—',p2:'2 pass',p3:'2-3 pass'},
+  {t:'3',type:'Cert',name:'Security+ certified',p1:'—',p2:'3 pass',p3:'3-4 pass'},
+  {t:'3',type:'Delivery',name:'MTTR critical incidents',p1:'—',p2:'≤4 hours',p3:'≤2 hours'},
+  {t:'3',type:'Delivery',name:'Prod services with logging+tracing',p1:'—',p2:'≥70%',p3:'100%'},
+  {t:'4',type:'Cert',name:'SAP-C02 certified',p1:'—',p2:'1-2 pass',p3:'Maintaining'},
+  {t:'4',type:'Cert',name:'AIF-C01 certified (PM/BA)',p1:'—',p2:'2-3 pass',p3:'Maintaining'},
+  {t:'overall',type:'Milestone',name:'Regulated go-lives passing all gates first-time',p1:'—',p2:'≥70%',p3:'≥90%'},
+  {t:'overall',type:'Milestone',name:'Pitch ✅ → Contract ✅ → Go-live ✅',p1:'✅',p2:'✅',p3:'✅'},
+];
+
+// ─── GANTT DATA ────────────────────────────────────────────────────────────────
+// months: [startMonth(1-based), endMonth(inclusive)]
+const ganttRows = [
+  // Phase 1 items
+  {label:'Compliance Onboarding Package',t:1,phase:'P1',start:1,end:2},
+  {label:'Retain CISSP/CISM Consultant',t:1,phase:'P1',start:1,end:18},
+  {label:'ISO 27001 Gap Assessment',t:1,phase:'P1',start:1,end:3},
+  {label:'VAPT Engagement Letter',t:1,phase:'P1',start:2,end:3},
+  {label:'Governance Docs v1 (AI policy/IRP)',t:1,phase:'P1',start:1,end:3},
+  {label:'AI Team Foundation (Python/RAG/Eval)',t:2,phase:'P1',start:1,end:3},
+  {label:'LLM Orchestration Training',t:2,phase:'P1',start:2,end:3},
+  {label:'Platform Foundation (Linux/CI-CD)',t:3,phase:'P1',start:1,end:3},
+  {label:'AWS MLA-C01 (2-3 engineers)',t:2,phase:'P2',start:3,end:7},
+  {label:'AWS AIP-C01 (senior AI)',t:2,phase:'P2',start:4,end:8},
+  {label:'NVIDIA NCA-GENL (2-3 eng)',t:2,phase:'P2',start:3,end:7},
+  {label:'Eval Harness + MLOps Process',t:2,phase:'P2',start:3,end:6},
+  {label:'CKA Exam (2-3 platform eng)',t:3,phase:'P2',start:3,end:8},
+  {label:'CompTIA Security+ (3-4 eng)',t:3,phase:'P2',start:4,end:9},
+  {label:'SRE + Observability Baseline',t:3,phase:'P2',start:4,end:7},
+  {label:'ISO 27001 Implementer (2-3)',t:1,phase:'P2',start:3,end:6},
+  {label:'AI Governance & DD Training',t:1,phase:'P2',start:4,end:6},
+  {label:'Execute Full VAPT',t:1,phase:'P2',start:5,end:8},
+  {label:'AWS SAP-C02 (Eng Lead + SA)',t:4,phase:'P2',start:3,end:9},
+  {label:'AWS AIF-C01 (PM/BA)',t:4,phase:'P2',start:3,end:6},
+  {label:'Production Case Studies (2-3)',t:2,phase:'P2',start:6,end:9},
+  {label:'ISO 27001 Certification',t:1,phase:'P3',start:9,end:16},
+  {label:'CISM (governance lead)',t:1,phase:'P3',start:10,end:17},
+  {label:'ISO 27001 Lead Implementer',t:1,phase:'P3',start:9,end:13},
+  {label:'SOC 2 Readiness Assessment',t:1,phase:'P3',start:14,end:18},
+  {label:'NVIDIA NCP-AAI (AI tech lead)',t:2,phase:'P3',start:10,end:15},
+  {label:'CKS (Platform Security Lead)',t:3,phase:'P3',start:9,end:14},
+  {label:'CompTIA SecAI+ (1-2)',t:3,phase:'P3',start:10,end:16},
+  {label:'3-5 Case Studies Finalized',t:2,phase:'P3',start:12,end:18},
+];
+
+const phaseSpans = [
+  {label:'Phase 1: Pitch-Ready',phase:'P1',cls:'ph1',start:1,end:3,color:'#2352A8'},
+  {label:'Phase 2: Contract-Ready',phase:'P2',cls:'ph2',start:4,end:9,color:'#1A7A4A'},
+  {label:'Phase 3: Go-Live Ready',phase:'P3',cls:'ph3',start:10,end:18,color:'#7040A8'},
+];
+
+const milestones = [
+  {month:3,label:'★ Pitch-Ready',color:'#2352A8'},
+  {month:9,label:'★ Contract-Ready',color:'#1A7A4A'},
+  {month:18,label:'★ Go-Live',color:'#7040A8'},
+];
+
+// ─── RENDER CAPABILITIES ───────────────────────────────────────────────────────
+
+function makeFilters() {
+  const wrap = document.getElementById('filterBtns');
+  const filters = [
+    {label:'All', val:'all'},
+    {label:'Track 1 — Compliance', val:'t-1'},
+    {label:'Track 2 — AI Eng', val:'t-2'},
+    {label:'Track 3 — Platform', val:'t-3'},
+    {label:'Track 4 — Leadership', val:'t-4'},
+    {label:'FOUNDATION', val:'tier-FOUNDATION'},
+    {label:'CORE', val:'tier-CORE'},
+    {label:'ELITE', val:'tier-ELITE'},
+    {label:'P0 — Critical', val:'p-P0'},
+    {label:'P1 — High', val:'p-P1'},
+  ];
+  wrap.innerHTML = filters.map(f =>
+    `<button class="f-btn${f.val==='all'?' active':''}" data-filter="${f.val}">${f.label}</button>`
+  ).join('');
+  wrap.querySelectorAll('.f-btn').forEach(b => b.addEventListener('click', () => {
+    wrap.querySelectorAll('.f-btn').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    renderCaps(b.dataset.filter);
+  }));
+}
+
+function renderCaps(filter='all') {
+  const tbody = document.getElementById('capBody');
+  tbody.innerHTML = '';
+  caps.forEach((c,i) => {
+    if(filter!=='all' && filter!==`t-${c.t}` && filter!==`tier-${c.tier}` && filter!==`p-${c.p}`) return;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="tl-accent tl${c.t}" style="padding-left:14px">
+        <span style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${TRACK_COLORS[c.t]}">Track ${c.t}</span>
+      </td>
+      <td><span class="badge b-${c.tier.toLowerCase()}">${c.tier}</span></td>
+      <td><div class="cap-name">${c.name}</div><div class="cap-inst">${c.inst}</div></td>
+      <td><span class="badge b-${c.p.toLowerCase()}">${c.p}</span></td>
+      <td style="font-size:12px;font-weight:600;white-space:nowrap">${c.cost}</td>
+      <td><div class="people">${c.people.map(p=>`<span class="person">${p}</span>`).join('')}</div></td>
+      <td style="font-size:11px;color:var(--text2);white-space:nowrap">${c.time}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ─── RENDER GANTT ──────────────────────────────────────────────────────────────
+
+function renderGantt() {
+  const wrap = document.getElementById('ganttChart');
+  const months = Array.from({length:18},(_,i)=>i+1);
+  const monthLabels = ['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15','M16','M17','M18'];
+
+  let html = `
+  <div class="gantt-header">
+    <div class="gantt-header-left">Activity</div>
+    <div class="gantt-months">
+      ${monthLabels.map((m,i)=>`<div class="gantt-month" style="${i<3?'background:rgba(35,82,168,.3)':i<9?'background:rgba(26,122,74,.25)':'background:rgba(112,64,168,.25)'}">${m}</div>`).join('')}
+    </div>
+  </div>`;
+
+  // Phase headers
+  const phases = [
+    {label:'Phase 1 — Pitch-Ready',cls:'ph1',color:'#2352A8',start:1,end:3},
+    {label:'Phase 2 — Contract-Ready',cls:'ph2',color:'#1A7A4A',start:4,end:9},
+    {label:'Phase 3 — Go-Live Ready',cls:'ph3',color:'#7040A8',start:10,end:18},
+  ];
+
+  phases.forEach(ph => {
+    const rowsInPhase = ganttRows.filter(r => r.phase === ph.phase);
+
+    html += `<div class="gantt-phase-row">
+      <div class="gantt-phase-label">
+        <span class="phase-pill ${ph.cls}">${ph.label}</span>
+      </div>
+      <div class="gantt-phase-bar" style="position:relative">
+        <div style="display:grid;grid-template-columns:repeat(18,1fr);height:36px">
+          ${months.map(m=>`<div style="border-right:1px solid var(--border);${m>=ph.start&&m<=ph.end?`background:${ph.color}22`:''}"></div>`).join('')}
+        </div>
+        ${milestones.filter(ms=>ms.month>=ph.start&&ms.month<=ph.end).map(ms=>`
+          <div style="position:absolute;left:calc(${(ms.month-1)/18*100}%);top:0;bottom:0;width:2px;background:${ms.color};opacity:.7;z-index:2">
+            <div style="position:absolute;top:2px;left:4px;font-size:9px;font-weight:700;color:${ms.color};white-space:nowrap">${ms.label}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+
+    rowsInPhase.forEach((row, idx) => {
+      const startPct = ((row.start-1)/18*100).toFixed(2);
+      const widthPct = ((row.end-row.start+1)/18*100).toFixed(2);
+      const delay = idx * 0.05;
+      html += `<div class="gantt-row">
+        <div class="gantt-row-label">
+          <div class="row-track-dot" style="background:${TRACK_COLORS[row.t]}"></div>
+          <span style="font-size:11px;line-height:1.3">${row.label}</span>
+        </div>
+        <div class="gantt-row-bars" style="position:relative">
+          ${months.map(m=>`<div class="gantt-cell" style="${m>=row.start&&m<=row.end?`background:${TRACK_COLORS[row.t]}14`:''}"></div>`).join('')}
+          <div class="gantt-bar" style="
+            left:calc(${startPct}% + 2px);
+            width:calc(${widthPct}% - 4px);
+            background:${TRACK_COLORS[row.t]};
+            animation-delay:${delay}s;
+          " title="${row.label} (M${row.start}–M${row.end})">
+            ${widthPct > 15 ? row.label.substring(0,20)+'…' : ''}
+          </div>
+        </div>
+      </div>`;
+    });
+  });
+
+  wrap.innerHTML = html;
+}
+
+// ─── RENDER GATES ──────────────────────────────────────────────────────────────
+
+function renderGates() {
+  const wrap = document.getElementById('gatesGrid');
+  wrap.innerHTML = gates.map(g => `
+    <div class="gate">
+      <div class="gate-id-badge ${g.cls}">${g.id}</div>
+      <h3>${g.name}</h3>
+      <p class="gate-purpose">${g.purpose}</p>
+      <div class="gate-meta">
+        <span>👤 ${g.approver}</span>
+        <span>🔁 ${g.freq}</span>
+      </div>
+      <div style="margin-top:12px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);padding-top:10px">
+        📋 ${g.scope}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ─── RENDER BUDGET ─────────────────────────────────────────────────────────────
+
+function renderBudget() {
+  const decMap={must:'dec-must',should:'dec-should',defer:'dec-defer',cond:'dec-cond'};
+  const decLabel={must:'Must now',should:'Should Y1',defer:'Defer OK',cond:'Conditional'};
+  const wrap = document.getElementById('budgetGrid');
+  wrap.innerHTML = budgetData.map(cat => `
+    <div class="budget-cat">
+      <div class="budget-cat-head ${cat.cat}">${cat.label}</div>
+      ${cat.items.map(i=>`
+        <div class="budget-item">
+          <span class="bi-name">${i.n}</span>
+          <div class="bi-right">
+            <span class="bi-cost">${i.c}</span>
+            <span class="dec ${decMap[i.d]}">${decLabel[i.d]}</span>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+// ─── RENDER MATRIX ─────────────────────────────────────────────────────────────
+
+function renderMatrix() {
+  const tbody = document.getElementById('matrixBody');
+  tbody.innerHTML = matrix.map(row => `
+    <tr>
+      <td>${row.n}</td>
+      ${row.v.map(v=>{
+        if(v==='M') return `<td class="cm">M</td>`;
+        if(v==='R') return `<td class="cr">R</td>`;
+        if(v==='O') return `<td class="co">O</td>`;
+        return `<td class="cd">—</td>`;
+      }).join('')}
+    </tr>
+  `).join('');
+}
+
+// ─── RENDER KPIs ───────────────────────────────────────────────────────────────
+
+function renderKPIs() {
+  const wrap = document.getElementById('kpiGrid');
+  const trackLabel = {1:'Track 1',2:'Track 2',3:'Track 3',4:'Track 4',overall:'Overall'};
+  wrap.innerHTML = kpis.map(k => {
+    const rv = v => {
+      if(!v||v==='—') return `<div class="kpi-ph-v empty">—</div>`;
+      if(v.includes('✅')) return `<div class="kpi-ph-v tick">✅</div>`;
+      return `<div class="kpi-ph-v">${v}</div>`;
+    };
+    return `<div class="kpi" data-t="${k.t}">
+      <div class="kpi-track">${trackLabel[k.t]} · ${k.type}</div>
+      <div class="kpi-name">${k.name}</div>
+      <div class="kpi-phases">
+        <div class="kpi-ph"><div class="kpi-ph-l">P1 · 0–3m</div>${rv(k.p1)}</div>
+        <div class="kpi-ph"><div class="kpi-ph-l">P2 · 3–9m</div>${rv(k.p2)}</div>
+        <div class="kpi-ph"><div class="kpi-ph-l">P3 · 9–18m</div>${rv(k.p3)}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ─── NAV HIGHLIGHT ─────────────────────────────────────────────────────────────
+
+const navLinks = document.querySelectorAll('nav a');
+const sectionEls = document.querySelectorAll('section[id], #hero');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      const id = e.target.id;
+      navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href')==='#'+id));
+    }
+  });
+},{rootMargin:'-35% 0px -60% 0px'});
+sectionEls.forEach(s => obs.observe(s));
+
+// ─── REVEAL ON SCROLL ──────────────────────────────────────────────────────────
+
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
+  });
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// ─── INIT ──────────────────────────────────────────────────────────────────────
+
+makeFilters();
+renderCaps();
+renderGantt();
+renderGates();
+renderBudget();
+renderMatrix();
+renderKPIs();
+</script>
+</body>
+</html>
